@@ -4,10 +4,21 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
+
                 <div class="card-body">
+                    <div class="row justify-content-end mb-2">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+                                </div>
+                                <input class="form-control" type="text" id="reportrange" width="100%">
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive ">
                         <table id="data-table"
-                            class="table table-bordered text-nowrap key-buttons border-bottom  w-100 text-center"
+                            class="table table-bordered text-nowrap key-buttons border-bottom w-100 text-center table-hover"
                             style="width: 100%;">
                             <thead>
                                 <tr>
@@ -17,11 +28,7 @@
                                     <th class="border-bottom-0">Totalizer 1</th>
                                     <th class="border-bottom-0">Totalizer 2</th>
                                     <th class="border-bottom-0">Totalizer 3</th>
-                                    <th class="border-bottom-0">Analog 1</th>
-                                    <th class="border-bottom-0">Analog 2</th>
-                                    <th class="border-bottom-0">Status Battery</th>
-                                    <th class="border-bottom-0">Alarm</th>
-                                    <th class="border-bottom-0">Bin Alarm</th>
+                                    <th class="border-bottom-0">Pressure</th>
                                     <th class="border-bottom-0">File Name</th>
                                 </tr>
                             </thead>
@@ -35,41 +42,11 @@
     </div>
 @endsection
 
-@section('modal')
-    <div id="modalDetail" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span
-                            aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span class="mb-0">Code</span>
-                            <strong class="text-muted" id="detail-code"></strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span class="mb-0">Name</span>
-                            <strong class="text-muted" id="detail-name"></strong>
-                        </li>
-                    </ul>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">
-                            {{ __('messages.button.close') }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
 @section('styles')
     <link href="{{ asset('assets') }}/plugins/datatable/css/dataTables.bootstrap5.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/plugins/datatable/css/buttons.bootstrap5.min.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/plugins/datatable/responsive.bootstrap5.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 @section('scripts')
@@ -86,4 +63,6 @@
     <script src="{{ asset('assets') }}/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="{{ asset('assets') }}/plugins/datatable/responsive.bootstrap5.min.js"></script>
     <script src="{{ asset('assets') }}/js/table-data.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 @endsection

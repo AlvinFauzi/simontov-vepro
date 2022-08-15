@@ -46,4 +46,5 @@ Route::middleware(['auth', 'verified', 'multi_language', 'history'])->group(func
     Route::resource('user', UserController::class)->middleware(['role:superAdmin|admin']);
     Route::resource('alarm', StatusAlarmController::class)->middleware(['role:superAdmin']);
     Route::resource('flowrate', FlowrateController::class);
+    Route::get('datepicker-lang', [FlowrateController::class, 'datepickerLang']);
 });

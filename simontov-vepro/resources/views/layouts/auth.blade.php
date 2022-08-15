@@ -8,11 +8,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo_sedang.png') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ env('MIX_URL') }}">
+    <meta name="app-url" content="{{ env('APP_DEBUG') ? env('APP_URL') : env('MIX_URL') }}">
     <title>{{ str_replace('-', ' ', config('app.name', 'Laravel')) }}</title>
     <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/icons.css') }}">
-    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('assets/colors/color1.css') }}" />
+    <link id="theme" rel="stylesheet" type="text/css" media="all"
+        href="{{ asset('assets/colors/color1.css') }}" />
 </head>
 
 <body>

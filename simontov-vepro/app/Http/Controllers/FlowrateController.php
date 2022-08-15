@@ -114,7 +114,10 @@ class FlowrateController extends Controller
             11 => 'file_name',
         );
 
-        $totalData = Flowrate::count();
+        $totalData = Flowrate::when($request->from_date, function ($q) use ($request) {
+            return $q->whereBetween('mag_date', array($request->from_date, $request->to_date));
+        })
+            ->count();
 
         $totalFiltered = $totalData;
 
@@ -124,14 +127,18 @@ class FlowrateController extends Controller
         $dir = $request->input('order.0.dir');
 
         if (empty($request->input('search.value'))) {
-            $flowrates = Flowrate::offset($start)
+            $flowrates = Flowrate::when($request->from_date, function ($q) use ($request) {
+                return $q->whereBetween('mag_date', array($request->from_date, $request->to_date));
+            })->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
             $search = $request->input('search.value');
 
-            $flowrates =  Flowrate::where('mag_date_time', 'LIKE', "%{$search}%")
+            $flowrates =  Flowrate::when($request->from_date, function ($q) use ($request) {
+                return $q->whereBetween('mag_date', array($request->from_date, $request->to_date));
+            })->where('mag_date_time', 'LIKE', "%{$search}%")
                 ->orWhere('flowrate', 'LIKE', "%{$search}%")
                 ->orWhere('totalizer_1', 'LIKE', "%{$search}%")
                 ->orWhere('totalizer_2', 'LIKE', "%{$search}%")
@@ -147,7 +154,9 @@ class FlowrateController extends Controller
                 ->orderBy($order, $dir)
                 ->get();
 
-            $totalFiltered = Flowrate::where('mag_date_time', 'LIKE', "%{$search}%")
+            $totalFiltered = Flowrate::when($request->from_date, function ($q) use ($request) {
+                return $q->whereBetween('mag_date', array($request->from_date, $request->to_date));
+            })->where('mag_date_time', 'LIKE', "%{$search}%")
                 ->orWhere('flowrate', 'LIKE', "%{$search}%")
                 ->orWhere('totalizer_1', 'LIKE', "%{$search}%")
                 ->orWhere('totalizer_2', 'LIKE', "%{$search}%")
@@ -188,5 +197,42 @@ class FlowrateController extends Controller
         );
 
         echo json_encode($json_data);
+    }
+
+    public function datepickerLang()
+    {
+        $data = [
+            'month' => [
+                [trans('date.month.jan')],
+                [trans('date.month.feb')],
+                [trans('date.month.mar')],
+                [trans('date.month.apr')],
+                [trans('date.month.may')],
+                [trans('date.month.jun')],
+                [trans('date.month.jul')],
+                [trans('date.month.aug')],
+                [trans('date.month.sep')],
+                [trans('date.month.oct')],
+                [trans('date.month.nov')],
+                [trans('date.month.dec')],
+            ],
+            'day' => [
+                [trans('date.day.su')],
+                [trans('date.day.mo')],
+                [trans('date.day.tu')],
+                [trans('date.day.we')],
+                [trans('date.day.th')],
+                [trans('date.day.fr')],
+                [trans('date.day.sa')],
+            ],
+            'button' => [
+                'cancel' => trans('date.button.cancel'),
+                'apply' => trans('date.button.apply'),
+            ]
+        ];
+        return response()->json([
+            'status' => 200,
+            'data' => $data,
+        ], 200);
     }
 }

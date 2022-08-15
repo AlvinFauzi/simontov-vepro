@@ -12,7 +12,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="app-url" content="{{ env('MIX_URL') }}">
+    <meta name="app-url" content="{{ env('APP_DEBUG') ? '' : env('MIX_URL') }}">
 
     <meta name="user-session" content="{{ auth()->user()->id }}">
 
@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/icons.css') }}">
 
-    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{ asset('assets/colors/color1.css') }}" />
+    <link id="theme" rel="stylesheet" type="text/css" media="all"
+        href="{{ asset('assets/colors/color1.css') }}" />
 
 
     @yield('styles')

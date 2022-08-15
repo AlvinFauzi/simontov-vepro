@@ -41,9 +41,8 @@
                                 <div class="input-group">
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
-                                    </div><input class="form-control fc-datepicker"
-                                        placeholder="{{ trans('lang.toDate') }}" type="text" name="toDate"
-                                        value="{{ now()->format('d F Y') }}">
+                                    </div><input class="form-control fc-datepicker" placeholder="{{ trans('lang.toDate') }}"
+                                        type="text" name="toDate" value="{{ now()->format('d F Y') }}">
                                 </div>
                                 <div class="invalid-feedback" id="error-toDate"></div>
                             </div>
@@ -66,7 +65,7 @@
             <div class="col-12">
                 <div class="card ">
                     <div class="card-header">
-                        <h3 class="card-title">Flowrate Chart</h3>
+                        <h3 class="card-title">Flowrate Pressure Chart</h3>
                         <div class="card-options">
                             <a href="javascript:void(0);" class="btn-filter" data-bs-placement="top"
                                 data-bs-toggle="tooltip" title="Refresh Chart">
@@ -79,28 +78,7 @@
                         </div>
                     </div>
                     <div class="card-body pb-0">
-                        <div id="container-flowrate-chart">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="card ">
-                    <div class="card-header">
-                        <h3 class="card-title">Pressure Chart</h3>
-                        <div class="card-options">
-                            <a href="javascript:void(0);" class="btn-filter" data-bs-placement="top"
-                                data-bs-toggle="tooltip" title="Refresh Chart">
-                                <i class="fa fa-refresh"></i>
-                            </a>
-                            <a href="javascript:void(0);" data-bs-toggle="card-fullscreen" title="Full Screen Chart"
-                                class="card-options-fullscreen">
-                                <i class="fe fe-maximize"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body pb-0">
-                        <div id="container-pressure-chart">
+                        <div id="container-flowrate-pressure-chart">
                         </div>
                     </div>
                 </div>

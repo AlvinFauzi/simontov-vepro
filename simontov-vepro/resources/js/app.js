@@ -3,7 +3,6 @@ window.appUrl = $('meta[name="app-url"]').attr('content')
 window.moment = require('moment')
 window.Swal = require('sweetalert2')
 
-
 moment.locale('id');
 
 window.unauthAlert = function(message) {
