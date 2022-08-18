@@ -12,7 +12,7 @@
                                 <div class="input-group-text">
                                     <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
                                 </div>
-                                <input class="form-control" type="text" id="reportrange" width="100%">
+                                <input class="form-control" type="text" id="dateRange" width="100%">
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,10 @@
                                     <th class="border-bottom-0">Totalizer 1</th>
                                     <th class="border-bottom-0">Totalizer 2</th>
                                     <th class="border-bottom-0">Totalizer 3</th>
+                                    <th class="border-bottom-0">Analog 1</th>
                                     <th class="border-bottom-0">Pressure</th>
+                                    <th class="border-bottom-0">Status Battery</th>
+                                    <th class="border-bottom-0">Bin Alarm</th>
                                     <th class="border-bottom-0">File Name</th>
                                 </tr>
                             </thead>

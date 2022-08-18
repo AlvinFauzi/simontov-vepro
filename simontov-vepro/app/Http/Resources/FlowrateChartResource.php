@@ -16,7 +16,7 @@ class FlowrateChartResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'mag_date' => $this->mag_date->format('d-m-y H:i'),
+            'mag_date' => $this->mag_date->isoFormat('LLL'),
             'flowrate' => $this->flowrate,
             'analog_1' => $this->analog_1,
             'analog_2' => $this->analog_2,

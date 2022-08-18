@@ -7,6 +7,7 @@ use App\Models\Flowrate;
 use App\Models\StatusAlarm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -54,8 +55,8 @@ class HomeController extends Controller
     {
         $request->validate([
             'flowrate' => 'required|string|exists:flowrates,file_name',
-            'fromDate' => 'required|date|before_or_equal:now',
-            'toDate' => 'required|date|after:fromDate',
+            'fromDate' => 'required',
+            'toDate' => 'required',
         ]);
         $start = Carbon::parse($request->fromDate);
         $end = Carbon::parse($request->toDate);
@@ -63,46 +64,55 @@ class HomeController extends Controller
         $query = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            ->where('mag_date', '>=', $start)
-            ->where('mag_date', '<=', $end)
+            ->when($request->interval, function ($q) use ($request) {
+                return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
+            })
+            ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'asc')
             ->get();
 
         $latest = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            ->where('mag_date', '>=', $start)
-            ->where('mag_date', '<=', $end)
+            ->when($request->interval, function ($q) use ($request) {
+                return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
+            })
+            ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'asc')
             ->first();
 
-        $binData =  str_split($latest->getBin());
-        $binDataFilter =  array_diff($binData, ['0']);
-        $binItem = [];
-        foreach ($binDataFilter as $item => $value) {
-            $binItem[] = StatusAlarm::find($item + 1);
+        if ($latest) {
+            $binData =  str_split($latest->getBin());
+            $binDataFilter =  array_diff($binData, ['0']);
+            $binItem = [];
+            foreach ($binDataFilter as $item => $value) {
+                $binItem[] = StatusAlarm::find($item + 1);
+            }
+            $data = [
+                'binItem' => $latest ? $binItem : [],
+                'data' => FlowrateChartResource::collection($query),
+                'status_battery' => $latest->status_battery ?? null,
+                'alarm' => $latest->alarm ?? null,
+                'bin_alarm' => $latest->getBin() ?? null,
+                'totalizer_1' => $latest ? $latest->totalizer_1  . ' ' . $latest->unittotalizer : null,
+                'totalizer_2' => $latest ? $latest->totalizer_2  . ' ' . $latest->unittotalizer : null,
+                'totalizer_3' => $latest ? $latest->totalizer_3  . ' ' . $latest->unittotalizer : null,
+                'max_flowrate' => $query->max('flowrate') . ' ' . ($latest->unit_flowrate ?? '-'),
+                'min_flowrate' => $query->min('flowrate') . ' ' . ($latest->unit_flowrate ?? '-'),
+                'max_analog' => $query->max('analog_2'),
+                'min_analog' => $query->min('analog_2'),
+                'dateRange' => $start->isoFormat('LLLL') . ' - ' . $end->isoFormat('LLLL'),
+            ];
+
+            return response()->json([
+                'status' => 200,
+                'data' => $data,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => trans('lang.notDataFound'),
+            ], 404);
         }
-
-
-        $data = [
-            'binItem' => $binItem,
-            'data' => FlowrateChartResource::collection($query),
-            'status_battery' => $latest->status_battery ?? null,
-            'alarm' => $latest->alarm ?? null,
-            'bin_alarm' => $latest->getBin() ?? null,
-            'totalizer_1' => $latest ? $latest->totalizer_1  . ' ' . $latest->unittotalizer : null,
-            'totalizer_2' => $latest ? $latest->totalizer_2  . ' ' . $latest->unittotalizer : null,
-            'totalizer_3' => $latest ? $latest->totalizer_3  . ' ' . $latest->unittotalizer : null,
-            'max_flowrate' => $query->max('flowrate') . ' ' . ($latest->unit_flowrate ?? '-'),
-            'min_flowrate' => $query->min('flowrate') . ' ' . ($latest->unit_flowrate ?? '-'),
-            'max_analog' => $query->max('analog_2'),
-            'min_analog' => $query->min('analog_2'),
-            'dateRange' => $start->isoFormat('LL') . ' - ' . $end->isoFormat('LL'),
-        ];
-
-        return response()->json([
-            'status' => 200,
-            'data' => $data,
-        ], 200);
     }
 }

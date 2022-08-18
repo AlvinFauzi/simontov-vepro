@@ -3,7 +3,9 @@
 use App\Http\Controllers\FlowrateController;
 use App\Http\Controllers\StatusAlarmController;
 use App\Http\Controllers\UserController;
+use App\Models\Flowrate;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*

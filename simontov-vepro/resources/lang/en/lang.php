@@ -121,4 +121,7 @@ return [
     'confirm-password'   => 'Confirm Password',
     'confirm-password-text'   => 'Please confirm your password before continuing',
 
+    'date-range'   => 'Date Range',
+    'interval'   => 'Interval Time',
+
 ];

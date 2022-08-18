@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-xl-4">
+                        <div class="col-xl-4 col-md-6">
                             <div class="form-group">
                                 <label for="flowrate" class="form-label">{{ trans('lang.flowrate') }}</label>
                                 <select name="flowrate" id="flowrate" class="form-select select2"
@@ -19,43 +19,51 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <div class="invalid-feedback" id="error-flowrate"></div>
                             </div>
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-xl-4 col-md-6">
                             <div class="form-group">
-                                <label for="fromDate" class="form-label">{{ trans('lang.fromDate') }}</label>
+                                <label for="fromDate" class="form-label">{{ trans('lang.date-range') }}</label>
                                 <div class="input-group">
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
-                                    </div><input class="form-control fc-datepicker"
-                                        placeholder="{{ trans('lang.fromDate') }}" type="text" name="fromDate"
-                                        value="{{ now()->addDays(-1)->format('d F Y') }}">
+                                    </div>
+                                    <input class="form-control" type="text" id="date_range" width="100%"
+                                        name="date_range">
                                 </div>
-                                <div class="invalid-feedback" id="error-fromDate"></div>
                             </div>
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-xl-4 col-md-12">
                             <div class="form-group">
-                                <label for="toDate" class="form-label">{{ trans('lang.toDate') }}</label>
-                                <div class="input-group">
-                                    <div class="input-group-text">
-                                        <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
-                                    </div><input class="form-control fc-datepicker" placeholder="{{ trans('lang.toDate') }}"
-                                        type="text" name="toDate" value="{{ now()->format('d F Y') }}">
-                                </div>
-                                <div class="invalid-feedback" id="error-toDate"></div>
+                                <label for="interval" class="form-label">{{ trans('lang.interval') }}</label>
+                                <select name="interval" id="interval" class="form-select select2"
+                                    data-placeholder="{{ trans('lang.interval') }}" style="width: 100%;">
+                                    <option value=""></option>
+                                    <option value="1">
+                                        1 min
+                                    </option>
+                                    <option value="5">
+                                        5 min
+                                    </option>
+                                    <option value="10">
+                                        10 min
+                                    </option>
+                                    <option value="15">
+                                        15 min
+                                    </option>
+                                    <option value="20">
+                                        20 min
+                                    </option>
+                                    <option value="30">
+                                        30 min
+                                    </option>
+                                    <option value="60">
+                                        60 min
+                                    </option>
+                                </select>
                             </div>
                         </div>
-
                     </div>
-
-                </div>
-                <div class="card-footer float-left">
-                    <button type="button" class="btn btn-success btn-filter">
-                        <i class="fe fe-search"></i>
-                        {{ __('messages.button.filter') }}
-                    </button>
                 </div>
             </div>
         </div>
@@ -78,6 +86,7 @@
                         </div>
                     </div>
                     <div class="card-body pb-0">
+                        <h5 id="chart-date-range" class="text-center fw-bold"></h5>
                         <div id="container-flowrate-pressure-chart">
                         </div>
                     </div>
@@ -192,23 +201,16 @@
 @section('styles')
     <link href="{{ asset('assets') }}/plugins/select2/select2.min.css" rel="stylesheet" />
     <!-- INTERNAL Bootstrap DatePicker css-->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/bootstrap-datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 @section('scripts')
     <!-- INTERNAL SELECT2 JS -->
     <script src="{{ asset('assets') }}/plugins/select2/select2.full.min.js"></script>
     <!-- DATEPICKER JS -->
-    <script src="{{ asset('assets') }}/plugins/date-picker/date-picker.js"></script>
-    <script src="{{ asset('assets') }}/plugins/date-picker/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-    <script>
-        $('.fc-datepicker').datepicker({
-            dateFormat: 'dd MM yy',
-            showOtherMonths: true,
-            selectOtherMonths: true,
-        });
-    </script>
     <script src="{{ asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
     <!-- APEXCHART JS -->
     <script src="{{ asset('assets//js/apexcharts.js') }}"></script>

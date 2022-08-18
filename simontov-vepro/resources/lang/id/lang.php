@@ -120,4 +120,7 @@ return [
     'confirm-password'   => 'Konfirmasi Kata Sandi',
     'confirm-password-text'   => 'Harap konfirmasi kata sandi Anda sebelum melanjutkan',
 
+    'date-range'   => 'Rentang Tanggal',
+    'interval'   => 'Waktu Jeda',
+
 ];
