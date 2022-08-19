@@ -109,7 +109,14 @@ if (location.pathname == `${appUrl}/home`) {
         }
 
         function setDashboardData(data) {
+
+            const totalizeResult = parseFloat(data.totalizer_first) - parseFloat(data.totalizer_last);
             $('#chart-date-range').text(`${data.dateRange}`)
+
+            $('#totalizer-first').html(`${data.totalizer_first}`)
+            $('#totalizer-last').html(`${data.totalizer_last}`)
+            $('#totalizer-result').html(`${parseFloat(totalizeResult).toFixed( 2 )} ${data.unitTotalizer}`)
+
             $('#totalizer-1').html(`${data.totalizer_1}`)
             $('#totalizer-2').html(`${data.totalizer_2}`)
             $('#totalizer-3').html(`${data.totalizer_3}`)
