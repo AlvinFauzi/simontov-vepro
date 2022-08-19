@@ -48,7 +48,7 @@
                                     <option value="10">
                                         10 min
                                     </option>
-                                    <option value="15" selected>
+                                    <option value="15">
                                         15 min
                                     </option>
                                     <option value="20">
@@ -114,23 +114,6 @@
                                             <div class="col text-center">
                                                 <span class="text-muted">Tot.Lizer 1</span>
                                                 <h4 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-1">-</h4>
-                                                <div class="row mt-3">
-                                                    <div class="col">
-                                                        <span class="fw-normal mt-2 mb-0 text-muted">Awal</span>
-                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-first">-
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col">
-                                                        <span class="fw-normal mt-2 mb-0 text-muted">Akhir</span>
-                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-last">-
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col">
-                                                        <span class="fw-normal mt-2 mb-0 text-muted">Hasil</span>
-                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-result">-
-                                                        </h5>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="col text-center"> <span class="text-muted">Tot.Lizer 2</span>
                                                 <h4 class="fw-normal mt-2 mb-0 number-font2" id="totalizer-2">-</h4>
@@ -139,6 +122,24 @@
                                                 <h4 class="fw-normal mt-2 mb-0 number-font3" id="totalizer-3">-</h4>
                                             </div>
                                         </div>
+                                        <div class="row mt-3">
+                                             <div class="col">
+                                                        <span class="fw-normal mt-2 mb-0 text-muted">Akhir</span>
+                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-last">-
+                                                        </h5>
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="fw-normal mt-2 mb-0 text-muted">Awal</span>
+                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-first">-
+                                                        </h5>
+                                                    </div>
+                                                   
+                                                    <div class="col">
+                                                        <span class="fw-normal mt-2 mb-0 text-muted">Hasil</span>
+                                                        <h5 class="fw-normal mt-2 mb-0 number-font1" id="totalizer-result">-
+                                                        </h5>
+                                                    </div>
+                                                </div>
                                     </div>
                                 </div>
                             </div>

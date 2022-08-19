@@ -2,7 +2,7 @@ if (location.pathname == `${appUrl}/home`) {
     var startDate,
         endDate;
     $(function () {
-        startDate = moment().subtract(1, 'days').set('hour',24).set('minute',-1);
+        startDate = moment().subtract(1, 'days').set('hour', 24).set('minute', -1);
         endDate = moment();
 
         var applyLabel,
@@ -17,21 +17,27 @@ if (location.pathname == `${appUrl}/home`) {
         $('#dashboard-chart').addClass('d-none')
 
         $('.btn-filter').on('click', async function () {
-            await filterFLowrate(
-                {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
-            )
+            await filterFLowrate({
+                flowrate: $('[name="flowrate"]').val(),
+                fromDate: startDate,
+                toDate: endDate,
+                interval: $('[name="interval"]').val()
+            })
         });
 
         $('#flowrate,#interval').on('change', async function () {
-            await filterFLowrate(
-                {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
-            )
+            await filterFLowrate({
+                flowrate: $('[name="flowrate"]').val(),
+                fromDate: startDate,
+                toDate: endDate,
+                interval: $('[name="interval"]').val()
+            })
         });
 
         function loadLanguage() {
             $.ajax({
                 type: 'get',
-                url: `/datepicker-lang`,
+                url: `${appUrl}/datepicker-lang`,
                 dataType: "json",
                 success: function (res) {
                     daysOfWeek = res.data.day
@@ -110,7 +116,7 @@ if (location.pathname == `${appUrl}/home`) {
 
         function setDashboardData(data) {
 
-            const totalizeResult = parseFloat(data.totalizer_first) - parseFloat(data.totalizer_last);
+            const totalizeResult = parseFloat(data.totalizer_last) - parseFloat(data.totalizer_first);
             $('#chart-date-range').text(`${data.dateRange}`)
 
             $('#totalizer-first').html(`${data.totalizer_first}`)
@@ -224,15 +230,13 @@ if (location.pathname == `${appUrl}/home`) {
                 colors: [
                     "#6259ca", "#eb6f33"
                 ],
-                series: [
-                    {
-                        name: "Flowrate",
-                        data: dataFlowrate
-                    }, {
-                        name: "Pressure",
-                        data: dataPressure
-                    }
-                ],
+                series: [{
+                    name: "Flowrate",
+                    data: dataFlowrate
+                }, {
+                    name: "Pressure",
+                    data: dataPressure
+                }],
                 stroke: {
                     width: [
                         2, 2
@@ -246,52 +250,50 @@ if (location.pathname == `${appUrl}/home`) {
                         datetimeUTC: false
                     }
                 },
-                yaxis: [
-                    {
-                        axisTicks: {
-                            show: true
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: "#6259ca",
-                            borderType: 'solid',
-                            width: 3,
-                        },
-                        labels: {
-                            style: {
-                                colors: "#6259ca"
-                            }
-                        },
-                        title: {
-                            text: "l/s",
-                            style: {
-                                color: "#6259ca"
-                            }
+                yaxis: [{
+                    axisTicks: {
+                        show: true
+                    },
+                    axisBorder: {
+                        show: true,
+                        color: "#6259ca",
+                        borderType: 'solid',
+                        width: 3,
+                    },
+                    labels: {
+                        style: {
+                            colors: "#6259ca"
                         }
-                    }, {
-                        opposite: true,
-                        axisTicks: {
-                            show: true
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: "#eb6f33",
-                            borderType: 'solid',
-                            width: 3,
-                        },
-                        labels: {
-                            style: {
-                                colors: "#eb6f33"
-                            }
-                        },
-                        title: {
-                            text: "Bar",
-                            style: {
-                                color: "#eb6f33"
-                            }
+                    },
+                    title: {
+                        text: "l/s",
+                        style: {
+                            color: "#6259ca"
                         }
                     }
-                ],
+                }, {
+                    opposite: true,
+                    axisTicks: {
+                        show: true
+                    },
+                    axisBorder: {
+                        show: true,
+                        color: "#eb6f33",
+                        borderType: 'solid',
+                        width: 3,
+                    },
+                    labels: {
+                        style: {
+                            colors: "#eb6f33"
+                        }
+                    },
+                    title: {
+                        text: "Bar",
+                        style: {
+                            color: "#eb6f33"
+                        }
+                    }
+                }],
                 tooltip: {
                     shared: !1,
                     y: {
@@ -324,7 +326,7 @@ if (location.pathname == `${appUrl}/home`) {
                 timePicker24Hour: true,
                 timePickerIncrement: 5,
                 maxDate: moment(),
-                startDate: moment().subtract(1, 'days').set('hour',24).set('minute',0),
+                startDate: moment().subtract(1, 'days').set('hour', 24).set('minute', 0),
                 endDate: moment(),
                 opens: 'left',
                 drops: 'auto',
@@ -351,9 +353,12 @@ if (location.pathname == `${appUrl}/home`) {
             html = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
             $('#date_range span').html(html);
 
-            filterFLowrate(
-                {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
-            )
+            filterFLowrate({
+                flowrate: $('[name="flowrate"]').val(),
+                fromDate: startDate,
+                toDate: endDate,
+                interval: $('[name="interval"]').val()
+            })
 
         }
 

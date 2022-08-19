@@ -12,7 +12,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="app-url" content="{{ env('APP_DEBUG') ? '' : env('MIX_URL') }}">
+    <meta name="app-url" content="{{ env('MIX_URL') }}">
 
     <meta name="user-session" content="{{ auth()->user()->id }}">
 
