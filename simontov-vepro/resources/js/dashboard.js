@@ -2,7 +2,7 @@ if (location.pathname == `${appUrl}/home`) {
     var startDate,
         endDate;
     $(function () {
-        startDate = moment().subtract(1, 'days');
+        startDate = moment().subtract(1, 'days').set('hour',24).set('minute',-1);
         endDate = moment();
 
         var applyLabel,
@@ -117,8 +117,8 @@ if (location.pathname == `${appUrl}/home`) {
             $('#flowrate-min').html(data.min_flowrate)
             $('#flowrate-max').html(data.max_flowrate)
 
-            $('#analog-min').html(`${data.min_analog} <sup class="fw-bold">Bar</sup>`)
-            $('#analog-max').html(`${data.max_analog} <sup class="fw-bold">Bar</sup>`)
+            $('#analog-min').html(`${data.min_analog} Bar`)
+            $('#analog-max').html(`${data.max_analog} Bar`)
 
             $('#alarm').text(data.alarm)
         }
@@ -317,7 +317,7 @@ if (location.pathname == `${appUrl}/home`) {
                 timePicker24Hour: true,
                 timePickerIncrement: 5,
                 maxDate: moment(),
-                startDate: moment().subtract(1, 'days'),
+                startDate: moment().subtract(1, 'days').set('hour',24).set('minute',0),
                 endDate: moment(),
                 opens: 'left',
                 drops: 'auto',

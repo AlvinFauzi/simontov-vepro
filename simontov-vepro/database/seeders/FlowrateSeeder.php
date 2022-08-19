@@ -37,7 +37,8 @@ class FlowrateSeeder extends Seeder
                 'status_battery' => $faker->numberBetween($min = 10, $max = 100),
                 'alarm' => $faker->numberBetween($min = 10, $max = 150),
                 'bin_alarm' => $randpattern,
-                'file_name' => 'FILE-' . $faker->numberBetween($min = 1, $max = 5),
+                // 'file_name' => 'FILE-' . $faker->numberBetween($min = 1, $max = 5),
+                'file_name' => 'FILE-1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

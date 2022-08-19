@@ -1,17 +1,24 @@
 const moment = require("moment");
 
 if (location.pathname === `${appUrl}/flowrate`) {
-
+    var startDate,
+        endDate;
     $(function () {
         let endPoint = `/flowrate`
 
-            var minDate,
-                maxDate,
-                applyLabel,
+            var applyLabel,
                 cancelLabel;
+
+            startDate = moment()
+                .subtract(1, 'days')
+                .set('hour', 24)
+                .set('minute', -1);
+            endDate = moment();
 
             let daysOfWeek = [];
             let monthNames = [];
+
+            cb(startDate, endDate);
 
             $.ajax({
                 type: 'get',
@@ -33,7 +40,7 @@ if (location.pathname === `${appUrl}/flowrate`) {
                 }
             });
 
-            cb(minDate, maxDate);
+            cb(startDate, endDate);
 
             function loadDatepicker() {
                 $('#dateRange').daterangepicker({
@@ -41,8 +48,11 @@ if (location.pathname === `${appUrl}/flowrate`) {
                     timePicker24Hour: true,
                     timePickerIncrement: 5,
                     maxDate: moment(),
-                    startDate: minDate,
-                    endDate: maxDate,
+                    startDate: moment()
+                        .subtract(1, 'days')
+                        .set('hour', 24)
+                        .set('minute', 0),
+                    endDate: moment(),
                     opens: 'left',
                     drops: 'auto',
                     "locale": {
@@ -64,8 +74,8 @@ if (location.pathname === `${appUrl}/flowrate`) {
             function cb(start, end) {
                 let html = '';
                 if (start) {
-                    minDate = start.format('YYYY-MM-DD HH:mm:ss');
-                    maxDate = end.format('YYYY-MM-DD HH:mm:ss');
+                    startDate = start.format('YYYY-MM-DD HH:mm:ss');
+                    endDate = end.format('YYYY-MM-DD HH:mm:ss');
                     html = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
                 } else {
                     html = 'Filter by Date'
@@ -75,7 +85,7 @@ if (location.pathname === `${appUrl}/flowrate`) {
                 $('#data-table')
                     .DataTable()
                     .destroy()
-                loadData(minDate, maxDate)
+                loadData(startDate, endDate)
             }
 
             function loadData(from = '', to = '') {

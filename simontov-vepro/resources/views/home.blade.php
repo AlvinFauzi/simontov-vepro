@@ -48,7 +48,7 @@
                                     <option value="10">
                                         10 min
                                     </option>
-                                    <option value="15">
+                                    <option value="15" selected>
                                         15 min
                                     </option>
                                     <option value="20">
