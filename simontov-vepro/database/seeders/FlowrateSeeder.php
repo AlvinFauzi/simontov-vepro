@@ -18,7 +18,7 @@ class FlowrateSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
         $list = [];
-        for ($i = 1; $i <= 1200; $i++) {
+        for ($i = 1; $i <= 120; $i++) {
             $randpattern = '';
             while (strlen($randpattern) < $faker->numberBetween($min = 0, $max = 14))
                 $randpattern .= rand(0, 1);

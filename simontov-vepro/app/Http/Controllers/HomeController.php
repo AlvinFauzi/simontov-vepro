@@ -64,19 +64,19 @@ class HomeController extends Controller
         $query = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            ->when($request->interval, function ($q) use ($request) {
-                return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            })
+            // ->when($request->interval, function ($q) use ($request) {
+            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
+            // })
             ->whereBetween('mag_date', array($start, $end))
-            ->orderBy('mag_date', 'asc')
+            ->orderBy('mag_date', 'desc')
             ->get();
 
         $first = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            ->when($request->interval, function ($q) use ($request) {
-                return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            })
+            // ->when($request->interval, function ($q) use ($request) {
+            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
+            // })
             ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'asc')
             ->first();
@@ -84,9 +84,9 @@ class HomeController extends Controller
         $last = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            ->when($request->interval, function ($q) use ($request) {
-                return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            })
+            // ->when($request->interval, function ($q) use ($request) {
+            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
+            // })
             ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'desc')
             ->first();
@@ -116,6 +116,8 @@ class HomeController extends Controller
                 'dateRange' => $start->isoFormat('LLLL') . ' - ' . $end->isoFormat('LLLL'),
                 'unitTotalizer' => $last->unittotalizer,
                 'unitFlowrate' => $last->unit_flowrate,
+                'first' => new FlowrateChartResource($first),
+                'last' => new FlowrateChartResource($last),
             ];
 
             return response()->json([
