@@ -25,7 +25,6 @@ if (location.pathname === `${appUrl}/flowrate`) {
                 url: `/datepicker-lang`,
                 dataType: "json",
                 success: function (res) {
-                    console.log(res);
                     daysOfWeek = res.data.day
                     monthNames = res.data.month
                     applyLabel = res.data.button.apply
@@ -39,8 +38,6 @@ if (location.pathname === `${appUrl}/flowrate`) {
                     }
                 }
             });
-
-            cb(startDate, endDate);
 
             function loadDatepicker() {
                 $('#dateRange').daterangepicker({
@@ -73,18 +70,16 @@ if (location.pathname === `${appUrl}/flowrate`) {
 
             function cb(start, end) {
                 let html = '';
-                if (start) {
-                    startDate = start.format('YYYY-MM-DD HH:mm:ss');
-                    endDate = end.format('YYYY-MM-DD HH:mm:ss');
-                    html = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
-                } else {
-                    html = 'Filter by Date'
-                }
+                startDate = start.format('YYYY-MM-DD HH:mm:ss');
+                endDate = end.format('YYYY-MM-DD HH:mm:ss');
+                html = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
                 $('#dateRange span').html(html);
+
                 // reload data
                 $('#data-table')
                     .DataTable()
-                    .destroy()
+                    .destroy();
+
                 loadData(startDate, endDate)
             }
 
