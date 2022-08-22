@@ -43,7 +43,6 @@ if (location.pathname === `${appUrl}/flowrate`) {
             $('#dateRange').daterangepicker({
                 timePicker: true,
                 timePicker24Hour: true,
-                timePickerIncrement: 5,
                 maxDate: moment(),
                 startDate: moment()
                     .subtract(1, 'days')
