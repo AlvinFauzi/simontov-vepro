@@ -2,11 +2,13 @@ if (location.pathname == `${appUrl}/home`) {
     var startDate,
         endDate;
     $(function () {
-        startDate = moment().subtract(1, 'days')
+        startDate = moment()
+            .subtract(1, 'days')
             .set('hour', 0)
             .set('minute', 0)
             .set('second', 0)
-        endDate = moment().subtract(1, 'days')
+        endDate = moment()
+            .subtract(1, 'days')
             .set('hour', 24)
             .set('minute', 0)
             .set('second', 0)
@@ -24,12 +26,9 @@ if (location.pathname == `${appUrl}/home`) {
         $('#dashboard-chart').addClass('d-none')
 
         $('#flowrate,#interval').on('change', async function () {
-            await filterFLowrate({
-                flowrate: $('[name="flowrate"]').val(),
-                fromDate: startDate,
-                toDate: endDate,
-                interval: $('[name="interval"]').val()
-            })
+            await filterFLowrate(
+                {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
+            )
         });
 
         function loadLanguage() {
@@ -70,8 +69,7 @@ if (location.pathname == `${appUrl}/home`) {
                         setDashboardData(res.data)
                         setBinData(res.data.binItem)
                         setBatteryStatus(res.data.status_battery)
-                        chartData.push(res.data.first)
-                        testFilter(res.data)
+                        chartFilterData(res.data)
                         chartData.map(val => {
                             categories.push(val.mag_date)
                             flowrates.push(val.flowrate)
@@ -232,13 +230,15 @@ if (location.pathname == `${appUrl}/home`) {
                 colors: [
                     "#6259ca", "#eb6f33"
                 ],
-                series: [{
-                    name: "Flowrate",
-                    data: dataFlowrate
-                }, {
-                    name: "Pressure",
-                    data: dataPressure
-                }],
+                series: [
+                    {
+                        name: "Flowrate",
+                        data: dataFlowrate
+                    }, {
+                        name: "Pressure",
+                        data: dataPressure
+                    }
+                ],
                 stroke: {
                     width: [
                         2, 2
@@ -252,50 +252,52 @@ if (location.pathname == `${appUrl}/home`) {
                         datetimeUTC: false
                     }
                 },
-                yaxis: [{
-                    axisTicks: {
-                        show: true
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: "#6259ca",
-                        borderType: 'solid',
-                        width: 3
-                    },
-                    labels: {
-                        style: {
-                            colors: "#6259ca"
+                yaxis: [
+                    {
+                        axisTicks: {
+                            show: true
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: "#6259ca",
+                            borderType: 'solid',
+                            width: 3
+                        },
+                        labels: {
+                            style: {
+                                colors: "#6259ca"
+                            }
+                        },
+                        title: {
+                            text: "l/s",
+                            style: {
+                                color: "#6259ca"
+                            }
                         }
-                    },
-                    title: {
-                        text: "l/s",
-                        style: {
-                            color: "#6259ca"
+                    }, {
+                        opposite: true,
+                        axisTicks: {
+                            show: true
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: "#eb6f33",
+                            borderType: 'solid',
+                            width: 3
+                        },
+                        labels: {
+                            style: {
+                                colors: "#eb6f33"
+                            }
+                        },
+                        title: {
+                            text: "Bar",
+                            style: {
+                                color: "#eb6f33"
+                            }
                         }
                     }
-                }, {
-                    opposite: true,
-                    axisTicks: {
-                        show: true
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: "#eb6f33",
-                        borderType: 'solid',
-                        width: 3
-                    },
-                    labels: {
-                        style: {
-                            colors: "#eb6f33"
-                        }
-                    },
-                    title: {
-                        text: "Bar",
-                        style: {
-                            color: "#eb6f33"
-                        }
-                    }
-                }],
+                ],
                 tooltip: {
                     shared: !1,
                     y: {
@@ -324,9 +326,7 @@ if (location.pathname == `${appUrl}/home`) {
 
         function loadDatepicker() {
             $('#date_range').daterangepicker({
-                timePicker: true,
-                timePicker24Hour: true,
-                // timePickerIncrement: 5,
+                timePicker: true, timePicker24Hour: true,
                 maxDate: moment(),
                 startDate: moment()
                     .subtract(1, 'days')
@@ -361,20 +361,21 @@ if (location.pathname == `${appUrl}/home`) {
             html = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
             $('#date_range span').html(html);
 
-            filterFLowrate({
-                flowrate: $('[name="flowrate"]').val(),
-                fromDate: startDate,
-                toDate: endDate,
-                interval: $('[name="interval"]').val()
-            })
+            filterFLowrate(
+                {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
+            )
 
         }
 
-        function testFilter(data) {
+        function chartFilterData(data) {
             var list = data.data
             var count = 0;
             var interval = $('[name="interval"]').val()
-            for (let i = 0; i < list.length; i++) {
+            var start = moment(startDate);
+            var end = moment(endDate);
+            var minute = end.diff(start, 'minutes')
+            chartData.push(data.first)
+            for (let i = 0; i < minute; i++) {
                 count += parseInt(interval)
                 check(count, data, list)
             }
@@ -385,7 +386,6 @@ if (location.pathname == `${appUrl}/home`) {
             for (let i = 0; i < list.length; i++) {
                 const val = list[i];
                 date.format('YYYY-MM-DD HH:mm:ss')
-
                 if (val.mag_date_chart === date.format('YYYY-MM-DD HH:mm:ss')) {
                     chartData.push(val)
                 }
