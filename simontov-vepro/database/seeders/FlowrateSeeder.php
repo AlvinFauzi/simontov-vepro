@@ -18,22 +18,22 @@ class FlowrateSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
         $list = [];
-        for ($i = 1; $i <= 120; $i++) {
+        for ($i = 1; $i <= 1200; $i++) {
             $randpattern = '';
             while (strlen($randpattern) < $faker->numberBetween($min = 0, $max = 14))
                 $randpattern .= rand(0, 1);
 
             $list[] = [
-                'mag_date' => Carbon::now()->addMinutes(-1 * $i)->format('Y-m-d H:i'),
-                'mag_date_time' => Carbon::now()->addMinutes(-1 * $i)->timestamp,
-                'flowrate' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 100),
+                'mag_date' => Carbon::now()->subDay()->addMinutes(-1 * $i)->format('Y-m-d H:i'),
+                'mag_date_time' => Carbon::now()->subDay()->addMinutes(-1 * $i)->timestamp,
+                'flowrate' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 50),
                 'unit_flowrate' => 'm3/h',
                 'totalizer_1' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 100),
                 'totalizer_2' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 100),
                 'totalizer_3' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 100),
                 'unittotalizer' => 'm3',
-                'analog_1' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 50),
-                'analog_2' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 50),
+                'analog_1' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 5),
+                'analog_2' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 5),
                 'status_battery' => $faker->numberBetween($min = 10, $max = 100),
                 'alarm' => $faker->numberBetween($min = 10, $max = 150),
                 'bin_alarm' => $randpattern,

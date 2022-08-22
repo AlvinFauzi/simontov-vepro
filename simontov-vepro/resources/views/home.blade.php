@@ -39,13 +39,13 @@
                                 <select name="interval" id="interval" class="form-select select2"
                                     data-placeholder="{{ trans('lang.interval') }}" style="width: 100%;">
                                     <option value=""></option>
-                                    <option value="1">
-                                        1 min
+                                    <option value="1" selected>
+                                        Show All
                                     </option>
                                     <option value="5">
                                         5 min
                                     </option>
-                                    <option value="10" selected>
+                                    <option value="10">
                                         10 min
                                     </option>
                                     <option value="15">
