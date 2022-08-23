@@ -7,9 +7,7 @@ use App\Models\Flowrate;
 use App\Models\StatusAlarm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -36,7 +34,7 @@ class HomeController extends Controller
                 ->get(),
             'setFileName' => Flowrate::first()->file_name
         ];
-        return view('home', $data);
+        return view('dashboard', $data);
     }
 
     public function theme($theme)
@@ -64,9 +62,6 @@ class HomeController extends Controller
         $query = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            // ->when($request->interval, function ($q) use ($request) {
-            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            // })
             ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'desc')
             ->get();
@@ -74,9 +69,6 @@ class HomeController extends Controller
         $first = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            // ->when($request->interval, function ($q) use ($request) {
-            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            // })
             ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'asc')
             ->first();
@@ -84,9 +76,6 @@ class HomeController extends Controller
         $last = Flowrate::where([
             'file_name' => $request->flowrate,
         ])
-            // ->when($request->interval, function ($q) use ($request) {
-            //     return $q->whereRaw('MOD(MINUTE(TIME(mag_date)),' . $request->interval . ') = 0 AND SECOND(TIME(mag_date)) = 0');
-            // })
             ->whereBetween('mag_date', array($start, $end))
             ->orderBy('mag_date', 'desc')
             ->first();

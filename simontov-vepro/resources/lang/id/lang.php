@@ -122,5 +122,5 @@ return [
 
     'date-range'   => 'Rentang Tanggal',
     'interval'   => 'Waktu Jeda',
-    'please-wait'   => 'Mohon Tunggu',
+    'please-wait'   => 'Mohon Tunggu Data sedang diproses',
 ];

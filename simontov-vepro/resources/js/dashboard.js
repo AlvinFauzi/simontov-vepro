@@ -18,7 +18,12 @@ if (location.pathname == `${appUrl}/home`) {
 
         let daysOfWeek = [];
         let monthNames = [];
-        let chartData = []
+        let chartData = [];
+        let categories = []
+        let flowrates = []
+        let analogs = []
+        let timestampFlowrate = []
+        let timestampPressure = []
 
         cb(startDate, endDate);
         loadLanguage()
@@ -26,9 +31,13 @@ if (location.pathname == `${appUrl}/home`) {
         $('#dashboard-chart').addClass('d-none')
 
         $('#flowrate,#interval').on('change', async function () {
+            var start = moment(startDate);
+            var end = moment(endDate);
+            var days = end.diff(start, 'days')
             await filterFLowrate(
                 {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
             )
+
         });
 
         function loadLanguage() {
@@ -45,53 +54,6 @@ if (location.pathname == `${appUrl}/home`) {
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.warn(thrownError);
-                    if (xhr.status == 403) {
-                        unauthAlert(xhr.responseJSON.message)
-                    }
-                }
-            });
-        }
-
-        function filterFLowrate(params) {
-            $.ajax({
-                type: 'get',
-                url: appUrl + '/filter-flowrate',
-                data: params,
-                dataType: "json",
-                success: function (res) {
-                    if (res.data.data.length > 0) {
-                        let categories = []
-                        let flowrates = []
-                        let analogs = []
-                        let timestampFlowrate = []
-                        let timestampPressure = []
-                        chartData = []
-                        setDashboardData(res.data)
-                        setBinData(res.data.binItem)
-                        setBatteryStatus(res.data.status_battery)
-                        chartFilterData(res.data)
-                        chartData.map(val => {
-                            categories.push(val.mag_date)
-                            flowrates.push(val.flowrate)
-                            analogs.push(val.analog_2)
-                            timestampFlowrate.push([
-                                (val.timestamp * 1000),
-                                parseFloat(val.flowrate)
-                            ])
-                            timestampPressure.push([
-                                (val.timestamp * 1000),
-                                parseFloat(val.analog_2)
-                            ])
-                        });
-                        flowratePressureChart(timestampFlowrate, timestampPressure)
-                        $('#dashboard-chart').removeClass('d-none')
-                    }
-
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    if (xhr.status == 404) {
-                        notFoundAlert(xhr.responseJSON.message)
-                    }
                     if (xhr.status == 403) {
                         unauthAlert(xhr.responseJSON.message)
                     }
@@ -326,7 +288,8 @@ if (location.pathname == `${appUrl}/home`) {
 
         function loadDatepicker() {
             $('#date_range').daterangepicker({
-                timePicker: true, timePicker24Hour: true,
+                timePicker: true,
+                timePicker24Hour: true,
                 maxDate: moment(),
                 startDate: moment()
                     .subtract(1, 'days')
@@ -355,6 +318,15 @@ if (location.pathname == `${appUrl}/home`) {
         }
 
         function cb(start, end) {
+            var days = end.diff(start, 'days')
+            if(days >= 90){
+                confirmAlert(start, end)
+            } else {
+                setDateRangeData(start, end)
+            }
+        }
+
+        function setDateRangeData(start, end) {
             let html = '';
             startDate = start.format('YYYY-MM-DD HH:mm:ss');
             endDate = end.format('YYYY-MM-DD HH:mm:ss');
@@ -364,7 +336,50 @@ if (location.pathname == `${appUrl}/home`) {
             filterFLowrate(
                 {flowrate: $('[name="flowrate"]').val(), fromDate: startDate, toDate: endDate, interval: $('[name="interval"]').val()}
             )
+        }
 
+        function filterFLowrate(params) {
+            $('#loading-chart').removeClass('d-none')
+            $('#loading-text').removeClass('d-none')
+            $('#container-flowrate-pressure-chart').addClass('d-none')
+            $('#other-chart').addClass('d-none')
+            $('#chart-date-range').addClass('d-none')
+            $.ajax({
+                type: 'get',
+                url: appUrl + '/filter-flowrate',
+                data: params,
+                dataType: "json",
+                success: function (res) {
+                    if (res.data.data.length > 0) {
+                        categories = []
+                        flowrates = []
+                        analogs = []
+                        timestampFlowrate = []
+                        timestampPressure = []
+                        chartData = []
+                        setDashboardData(res.data)
+                        setBinData(res.data.binItem)
+                        setBatteryStatus(res.data.status_battery)
+                        chartFilterData(res.data)
+                        flowratePressureChart(timestampFlowrate, timestampPressure)
+                        $('#loading-chart').addClass('d-none')
+                        $('#loading-text').addClass('d-none')
+                        $('#dashboard-chart').removeClass('d-none')
+                        $('#container-flowrate-pressure-chart').removeClass('d-none')
+                        $('#other-chart').removeClass('d-none')
+                        $('#chart-date-range').removeClass('d-none')
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 404) {
+                        notFoundAlert(xhr.responseJSON.message)
+                    }
+                    if (xhr.status == 403) {
+                        unauthAlert(xhr.responseJSON.message)
+                    }
+                }
+            });
         }
 
         function chartFilterData(data) {
@@ -383,13 +398,44 @@ if (location.pathname == `${appUrl}/home`) {
 
         function check(count, data, list) {
             var date = moment(data.first.mag_date_chart).add(count, 'minutes')
+            var getDate = date.format('YYYY-MM-DD HH:mm:ss')
             for (let i = 0; i < list.length; i++) {
                 const val = list[i];
-                date.format('YYYY-MM-DD HH:mm:ss')
-                if (val.mag_date_chart === date.format('YYYY-MM-DD HH:mm:ss')) {
+                if (val.mag_date_chart === getDate) {
                     chartData.push(val)
+                    categories.push(val.mag_date)
+                    flowrates.push(val.flowrate)
+                    analogs.push(val.analog_2)
+                    timestampFlowrate.push([
+                        (val.timestamp * 1000),
+                        parseFloat(val.flowrate)
+                    ])
+                    timestampPressure.push([
+                        (val.timestamp * 1000),
+                        parseFloat(val.analog_2)
+                    ])
                 }
             }
+        }
+
+        function confirmAlert(start, end) {
+            Swal
+                .fire({
+                    title: 'Peringatan',
+                    text: `Rentang tanggal data yang ditampilkan lebih dari 3 Bulan, akan melakukan proses loading chart lebih lama dari biasanya.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#198754',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Lanjutkan',
+                    cancelButtonText: 'Batal'
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        $('[name="interval"]').val(60).trigger('change')
+                        setDateRangeData(start, end)
+                    }
+                });
         }
 
     });

@@ -123,6 +123,6 @@ return [
 
     'date-range'   => 'Date Range',
     'interval'   => 'Interval Time',
-    'please-wait'   => 'Please Wait',
+    'please-wait'   => 'Please Wait Data being Process',
 
 ];
