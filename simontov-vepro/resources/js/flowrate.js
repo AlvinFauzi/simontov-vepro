@@ -154,11 +154,11 @@ if (location.pathname === `${appUrl}/flowrate`) {
                         data: 'analog_1',
                         name: 'analog_1'
                     }, {
+                        data: 'analog_2',
+                        name: 'analog_2'
+                    }, {
                         data: 'status_battery',
                         name: 'status_battery'
-                    }, {
-                        data: 'alarm',
-                        name: 'alarm'
                     }, {
                         data: 'bin_alarm',
                         name: 'bin_alarm'
